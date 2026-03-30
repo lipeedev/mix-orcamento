@@ -115,7 +115,7 @@ export function App() {
 								itens: {resultPartDataList.length}
 							</h3>
 
-							<button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 pointer' onClick={() => setResultPartDataList([])}>
+							<button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer' onClick={() => setResultPartDataList([])}>
 								Limpar
 							</button>
 						</div>
