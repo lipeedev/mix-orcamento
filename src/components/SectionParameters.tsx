@@ -44,7 +44,7 @@ export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate,
           </div>
 
           <div className="flex items-end">
-            <button type="submit" onClick={() => onGenerateBudget(measures)} className="w-full bg-orange-400 hover:bg-orange-600 text-white font-black py-3.5 rounded-lg transition-all active:scale-95 shadow-lg shadow-orange-900/20 text-xs uppercase tracking-widest">
+            <button type="submit" onClick={() => onGenerateBudget(measures)} className="w-full bg-orange-400 hover:bg-orange-600 text-white font-black py-3.5 rounded-lg transition-all active:scale-95 shadow-lg shadow-orange-900/20 text-xs uppercase tracking-widest pointer">
               Gerar Orçamento
             </button>
           </div>
