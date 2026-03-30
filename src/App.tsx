@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FinalCost, Header, SectionParameters, TableDetails } from './components'
 import './styles/global.css'
-import { convertToFinalResult } from './utils/convertToFinalResult'
+import { convertToFinalResult } from './utils'
 
 type Measure = {
   height: number,
