@@ -107,6 +107,9 @@ export function App() {
 	const changeCategory = (category: GlassCategory) => {
 		handleUpdateSingleValue('category', category)
 		setCurrentCategory(category)
+		if (category !== 'folhas') {
+			handleUpdateSingleValue('leafs', 0)
+		}
 	}
 
 	return (
@@ -118,7 +121,7 @@ export function App() {
 					{
 						(['folhas', 'pivotante'] as GlassCategory[]).map(category => {
 							return (
-								<h2 onClick={() => changeCategory(category)} className={`cursor-pointer py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700'} font-bold tracking-widest text-xs cursor-pointer hover:bg-zinc-800 uppercase rounded-md`}>{category}</h2>
+								<h2 onClick={() => changeCategory(category)} className={`cursor-pointer py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800'} font-bold tracking-widest text-xs cursor-pointer uppercase rounded-md`}>{category}</h2>
 							)
 						})
 					}
