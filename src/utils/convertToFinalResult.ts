@@ -44,6 +44,17 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
     finalResult.price = (spanMeasure.height * (spanMeasure.width + passMeasure) * pricePerMeter) * increasePercent
   }
 
+  if (category === 'basculante') {
+    space = {
+      fixed: { height: 0, width: 0 },
+      mobile: { height: 0.01, width: 0.01 }
+    }
+
+    finalResult.mobile.height = spanMeasure.height - space.mobile.height
+    finalResult.mobile.width = spanMeasure.width - space.mobile.width
+    finalResult.price = ((spanMeasure.height * spanMeasure.width) * pricePerMeter) * increasePercent
+  }
+
   return finalResult
 
 }

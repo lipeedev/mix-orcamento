@@ -8,7 +8,7 @@ type Measure = {
 	width: number
 }
 
-export type GlassCategory = 'folhas' | 'pivotante'
+export type GlassCategory = 'folhas' | 'pivotante' | 'basculante'
 
 export type PartData = {
 	spanMeasure: Measure,
@@ -119,9 +119,9 @@ export function App() {
 			<main className="w-full max-w-4xl flex flex-col gap-6">
 				<div className='flex gap-2'>
 					{
-						(['folhas', 'pivotante'] as GlassCategory[]).map(category => {
+						(['folhas', 'pivotante', 'basculante'] as GlassCategory[]).map(category => {
 							return (
-								<h2 onClick={() => changeCategory(category)} className={`cursor-pointer py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800'} font-bold tracking-widest text-xs cursor-pointer uppercase rounded-md`}>{category}</h2>
+								<h2 onClick={() => changeCategory(category)} className={`py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800 cursor-pointer'} font-bold tracking-widest text-xs uppercase rounded-md`}>{category}</h2>
 							)
 						})
 					}
