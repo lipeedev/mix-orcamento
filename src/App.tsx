@@ -8,10 +8,13 @@ type Measure = {
 	width: number
 }
 
+export type GlassCategory = 'folhas' | 'pivotante'
+
 export type PartData = {
 	spanMeasure: Measure,
 	fixed: Measure,
 	mobile: Measure,
+	category: GlassCategory;
 	leafs: number
 	pricePerMeter: number;
 	incrementPercent: number;
@@ -27,7 +30,7 @@ export type HandleUpdateMeasureParams = {
 	value: number
 }
 
-type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent'>
+type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent' | 'category'>
 type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
@@ -38,10 +41,13 @@ export function App() {
 		mobile: { height: 0, width: 0 },
 		leafs: 0,
 		pricePerMeter: 0,
-		incrementPercent: 0
+		incrementPercent: 0,
+		category: 'folhas'
 	})
 
 	const [resultPartDataList, setResultPartDataList] = useState<ResultPartData[]>([])
+
+	const [currentCategory, setCurrentCategory] = useState<GlassCategory>('folhas')
 
 	const handleUpdateMeasure = ({ field, measureField, value }: HandleUpdateMeasureParams) => {
 		setPartData(prev => ({
@@ -53,15 +59,18 @@ export function App() {
 		}))
 	}
 
-	const handleUpdateSingleValue = (field: PartDataSingleValueFields, value: number) => {
+	const handleUpdateSingleValue = (field: PartDataSingleValueFields, value: number | string) => {
 		setPartData(prev => ({ ...prev, [field]: value }))
 	}
 
-	const handleGenerateBudget = ({ fixed, leafs, mobile, spanMeasure, pricePerMeter, incrementPercent }: PartData) => {
+	const handleGenerateBudget = ({ fixed, leafs, mobile, spanMeasure, pricePerMeter, incrementPercent, category }: PartData) => {
 		if (!spanMeasure.height || !spanMeasure.width) return
 		if (spanMeasure.height > 6 || spanMeasure.width > 6) return
-		if (!leafs) return
-		if (leafs > 6) return
+
+		if (category === 'folhas') {
+			if (!leafs || leafs > 6) return
+		}
+
 		if (pricePerMeter > 200 || pricePerMeter < 100) return
 
 		const result = convertToFinalResult({
@@ -70,7 +79,8 @@ export function App() {
 			mobile,
 			pricePerMeter,
 			spanMeasure,
-			incrementPercent
+			incrementPercent,
+			category
 		})
 
 		setResultPartDataList(
@@ -81,6 +91,7 @@ export function App() {
 				spanMeasure,
 				pricePerMeter,
 				incrementPercent,
+				category,
 				price: result.price
 			}])]
 		)
@@ -93,12 +104,27 @@ export function App() {
 			)
 	}
 
+	const changeCategory = (category: GlassCategory) => {
+		handleUpdateSingleValue('category', category)
+		setCurrentCategory(category)
+	}
+
 	return (
 		<div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
 
 			<Header />
 			<main className="w-full max-w-4xl flex flex-col gap-6">
+				<div className='flex gap-2'>
+					{
+						(['folhas', 'pivotante'] as GlassCategory[]).map(category => {
+							return (
+								<h2 onClick={() => changeCategory(category)} className={`cursor-pointer py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700'} font-bold tracking-widest text-xs cursor-pointer hover:bg-zinc-800 uppercase rounded-md`}>{category}</h2>
+							)
+						})
+					}
+				</div>
 				<SectionParameters
+					currentCategory={currentCategory}
 					measures={partData}
 					onGenerateBudget={handleGenerateBudget}
 					onMeasureUpdate={handleUpdateMeasure}
@@ -107,7 +133,7 @@ export function App() {
 
 				<section className="grid grid-cols-1 md:grid-cols-12 gap-5">
 					<div className="md:col-span-7 bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col gap-4 shadow-xl">
-						<h3 className="text-blue-500 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Medidas de Corte e Peças</h3>
+						<h3 className="text-blue-600 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Medidas de Corte e Peças</h3>
 						<TableDetails resultPartDataList={resultPartDataList} />
 
 						<div className='my-2 flex gap-2'>

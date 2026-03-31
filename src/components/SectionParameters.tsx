@@ -1,13 +1,14 @@
-import type { HandleUpdateMeasureParams, PartData, PartDataSingleValueFields } from "../App"
+import type { GlassCategory, HandleUpdateMeasureParams, PartData, PartDataSingleValueFields } from "../App"
 
 interface SectionParametersProps {
   measures: PartData;
   onMeasureUpdate: (params: HandleUpdateMeasureParams) => void
   onUpdateSingleValue: (field: PartDataSingleValueFields, value: number) => void
   onGenerateBudget: (params: PartData) => void
+  currentCategory: GlassCategory
 }
 
-export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate, onUpdateSingleValue }: SectionParametersProps) {
+export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate, onUpdateSingleValue, currentCategory }: SectionParametersProps) {
 
   return (
     <section className="bg-zinc-900 p-5 rounded-xl border border-zinc-800 shadow-2xl">
@@ -28,10 +29,13 @@ export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate,
             <input max="6" step="any" required onChange={(e) => onMeasureUpdate({ field: 'spanMeasure', measureField: 'width', value: Number(e.target.value) })} type="number" placeholder="0.00" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-blue-500 transition-all placeholder:text-zinc-400" />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Quantidade de Folhas</label>
-            <input required max="4" onChange={(e) => onUpdateSingleValue('leafs', Number(e.target.value))} type="number" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-orange-400 transition-all font-bold placeholder:text-zinc-400" />
-          </div>
+          {
+            (currentCategory === 'folhas') &&
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Quantidade de Folhas</label>
+              <input required max="4" onChange={(e) => onUpdateSingleValue('leafs', Number(e.target.value))} type="number" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-orange-400 transition-all font-bold placeholder:text-zinc-400" />
+            </div>
+          }
 
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Valor do m² (R$)</label>
