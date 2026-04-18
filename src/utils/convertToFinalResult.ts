@@ -1,7 +1,7 @@
 import type { PartData } from "../App";
 import { adjustMeasureToFive } from "./adjustMeasureToFive";
 
-export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, incrementPercent, category }: PartData) {
+export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, incrementPercent, category, boxPadding }: PartData) {
   const increasePercent = 1 + (incrementPercent / 100);
   const passMeasure = 0.05
   let space = {
@@ -66,6 +66,23 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
     finalResult.mobile.width = spanMeasure.width + space.mobile.width
 
     finalResult.price = ((adjustMeasureToFive(finalResult.mobile.height) * adjustMeasureToFive(finalResult.mobile.width)) * pricePerMeter) * increasePercent
+  }
+
+  if (category === 'box') {
+    space = {
+      fixed: { height: 0.035, width: 0 },
+      mobile: { height: 0.00, width: 0 }
+    }
+
+    const widthWithPadding = adjustMeasureToFive(spanMeasure.width + (boxPadding / 100))
+    const firstWidth = adjustMeasureToFive(widthWithPadding / 2)
+    const secondWidth = adjustMeasureToFive(widthWithPadding - firstWidth)
+
+    finalResult.fixed.height = spanMeasure.height - space.fixed.height
+    finalResult.fixed.width = firstWidth < secondWidth ? firstWidth : secondWidth
+    finalResult.mobile.height = spanMeasure.height
+    finalResult.mobile.width = firstWidth > secondWidth ? firstWidth : secondWidth
+    finalResult.price = (adjustMeasureToFive(spanMeasure.height) * adjustMeasureToFive(widthWithPadding) * pricePerMeter) * increasePercent
   }
 
   return finalResult

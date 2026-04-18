@@ -29,7 +29,15 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
                   <div className="flex-1">{metersFormater.format(item.spanMeasure.height)}m x {metersFormater.format(item.spanMeasure.width)}m</div>
                   <div className="flex-1 text-center">{metersFormater.format(item.fixed.height)}m x {metersFormater.format(item.fixed.width)}m</div>
                   <div className="flex-1 text-center">{metersFormater.format(item.mobile.height)}m x {metersFormater.format(item.mobile.width)}m</div>
-                  <div className="uppercase w-24 text-right">{item.category === 'folhas' ? `${item.leafs / 2} Fixo, ${item.leafs / 2} Móvel` : `1 ${item.category}`}</div>
+                  {
+                    (item.category === 'folhas') && <div className="uppercase w-24 text-right">{item.leafs / 2} Fixo, {item.leafs / 2} Móvel</div>
+                  }
+                  {
+                    (item.category === 'box') && <div className="uppercase w-24 text-right">1 Fixo, 1 Móvel</div>
+                  }
+                  {
+                    (!['box', 'folhas'].includes(item.category)) && <div className="uppercase w-24 text-right">1 {item.category}</div>
+                  }
                 </div>
               ))
           }

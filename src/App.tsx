@@ -8,7 +8,7 @@ type Measure = {
 	width: number
 }
 
-export type GlassCategory = 'folhas' | 'pivotante' | 'basculante' | 'correr'
+export type GlassCategory = 'folhas' | 'pivotante' | 'basculante' | 'correr' | 'box'
 
 export type PartData = {
 	spanMeasure: Measure,
@@ -16,6 +16,7 @@ export type PartData = {
 	mobile: Measure,
 	category: GlassCategory;
 	leafs: number
+	boxPadding: number;
 	pricePerMeter: number;
 	incrementPercent: number;
 }
@@ -30,7 +31,7 @@ export type HandleUpdateMeasureParams = {
 	value: number
 }
 
-type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent' | 'category'>
+type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent' | 'category' | 'boxPadding'>
 type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
@@ -40,6 +41,7 @@ export function App() {
 		fixed: { height: 0, width: 0 },
 		mobile: { height: 0, width: 0 },
 		leafs: 0,
+		boxPadding: 0,
 		pricePerMeter: 0,
 		incrementPercent: 0,
 		category: 'folhas'
@@ -63,12 +65,16 @@ export function App() {
 		setPartData(prev => ({ ...prev, [field]: value }))
 	}
 
-	const handleGenerateBudget = ({ fixed, leafs, mobile, spanMeasure, pricePerMeter, incrementPercent, category }: PartData) => {
+	const handleGenerateBudget = ({ fixed, leafs, mobile, spanMeasure, pricePerMeter, incrementPercent, category, boxPadding }: PartData) => {
 		if (!spanMeasure.height || !spanMeasure.width) return
 		if (spanMeasure.height > 6 || spanMeasure.width > 6) return
 
 		if (category === 'folhas') {
 			if (!leafs || leafs > 6) return
+		}
+
+		if (category === 'box') {
+			if (boxPadding < 3 || leafs > 7) return
 		}
 
 		if (pricePerMeter > 200 || pricePerMeter < 100) return
@@ -77,6 +83,7 @@ export function App() {
 			fixed,
 			leafs,
 			mobile,
+			boxPadding,
 			pricePerMeter,
 			spanMeasure,
 			incrementPercent,
@@ -88,6 +95,7 @@ export function App() {
 				fixed: result.fixed,
 				mobile: result.mobile,
 				leafs,
+				boxPadding,
 				spanMeasure,
 				pricePerMeter,
 				incrementPercent,
@@ -110,18 +118,24 @@ export function App() {
 		if (category !== 'folhas') {
 			handleUpdateSingleValue('leafs', 0)
 		}
+
+		if (category !== 'box') {
+			handleUpdateSingleValue('boxPadding', 0)
+		}
+
 	}
 
 	return (
 		<div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
 
 			<Header />
-			<main className="w-full max-w-4xl flex flex-col gap-6">
-				<div className='flex gap-2'>
+			<main className="w-full max-w-4xl flex flex-col gap-5">
+				<h3 className='tracking-widest font-black uppercase text-[10px] text-zinc-400'>Selecione: </h3>
+				<div className='flex gap-2 flex-wrap'>
 					{
-						(['folhas', 'pivotante', 'basculante', 'correr'] as GlassCategory[]).map(category => {
+						(['folhas', 'pivotante', 'basculante', 'correr', 'box'] as GlassCategory[]).map(category => {
 							return (
-								<h2 onClick={() => changeCategory(category)} className={`py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800 cursor-pointer'} font-bold tracking-widest text-xs uppercase rounded-md`}>{category}</h2>
+								<h2 onClick={() => changeCategory(category)} className={`py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800 cursor-pointer'} font-bold tracking-widest text-xs w-26 text-center shrink-0 uppercase rounded-md`}>{category}</h2>
 							)
 						})
 					}

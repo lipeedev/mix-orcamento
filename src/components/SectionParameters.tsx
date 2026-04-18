@@ -37,6 +37,14 @@ export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate,
             </div>
           }
 
+          {
+            (currentCategory === 'box') &&
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Transpasse (cm)</label>
+              <input required min="3" max="7" onChange={(e) => onUpdateSingleValue('boxPadding', Number(e.target.value))} type="number" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-orange-400 transition-all font-bold placeholder:text-zinc-400" />
+            </div>
+          }
+
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Valor do m² (R$)</label>
             <input max="200" min="100" step="any" required onChange={e => onUpdateSingleValue('pricePerMeter', Number(e.target.value))} type="number" placeholder="180.00" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-blue-500 transition-all placeholder:text-zinc-400" />
