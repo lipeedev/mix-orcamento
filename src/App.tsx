@@ -4,31 +4,31 @@ import './styles/global.css'
 import { convertToFinalResult } from './utils'
 
 type Measure = {
-	height: number,
-	width: number
+  height: number,
+  width: number
 }
 
 export type GlassCategory = 'folhas' | 'pivotante' | 'basculante' | 'correr' | 'box'
 
 export type PartData = {
-	spanMeasure: Measure,
-	fixed: Measure,
-	mobile: Measure,
-	category: GlassCategory;
-	leafs: number
-	boxPadding: number;
-	pricePerMeter: number;
-	incrementPercent: number;
+  spanMeasure: Measure,
+  fixed: Measure,
+  mobile: Measure,
+  category: GlassCategory;
+  leafs: number
+  boxPadding: number;
+  pricePerMeter: number;
+  incrementPercent: number;
 }
 
 export type ResultPartData = PartData & {
-	price: number
+  price: number
 }
 
 export type HandleUpdateMeasureParams = {
-	field: PartDataFields,
-	measureField: PartDataMeasureFields,
-	value: number
+  field: PartDataFields,
+  measureField: PartDataMeasureFields,
+  value: number
 }
 
 type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent' | 'category' | 'boxPadding'>
@@ -36,144 +36,144 @@ type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
 export function App() {
-	const [partData, setPartData] = useState<PartData>({
-		spanMeasure: { height: 0, width: 0 },
-		fixed: { height: 0, width: 0 },
-		mobile: { height: 0, width: 0 },
-		leafs: 0,
-		boxPadding: 0,
-		pricePerMeter: 0,
-		incrementPercent: 0,
-		category: 'folhas'
-	})
+  const [partData, setPartData] = useState<PartData>({
+    spanMeasure: { height: 0, width: 0 },
+    fixed: { height: 0, width: 0 },
+    mobile: { height: 0, width: 0 },
+    leafs: 0,
+    boxPadding: 0,
+    pricePerMeter: 0,
+    incrementPercent: 0,
+    category: 'folhas'
+  })
 
-	const [resultPartDataList, setResultPartDataList] = useState<ResultPartData[]>([])
+  const [resultPartDataList, setResultPartDataList] = useState<ResultPartData[]>([])
 
-	const [currentCategory, setCurrentCategory] = useState<GlassCategory>('folhas')
+  const [currentCategory, setCurrentCategory] = useState<GlassCategory>('folhas')
 
-	const handleUpdateMeasure = ({ field, measureField, value }: HandleUpdateMeasureParams) => {
-		setPartData(prev => ({
-			...prev,
-			[field]: {
-				...prev[field],
-				[measureField]: value
-			}
-		}))
-	}
+  const handleUpdateMeasure = ({ field, measureField, value }: HandleUpdateMeasureParams) => {
+    setPartData(prev => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [measureField]: value
+      }
+    }))
+  }
 
-	const handleUpdateSingleValue = (field: PartDataSingleValueFields, value: number | string) => {
-		setPartData(prev => ({ ...prev, [field]: value }))
-	}
+  const handleUpdateSingleValue = (field: PartDataSingleValueFields, value: number | string) => {
+    setPartData(prev => ({ ...prev, [field]: value }))
+  }
 
-	const handleGenerateBudget = ({ fixed, leafs, mobile, spanMeasure, pricePerMeter, incrementPercent, category, boxPadding }: PartData) => {
-		if (!spanMeasure.height || !spanMeasure.width) return
-		if (spanMeasure.height > 6 || spanMeasure.width > 6) return
+  const handleGenerateBudget = ({ fixed, leafs, mobile, spanMeasure, pricePerMeter, incrementPercent, category, boxPadding }: PartData) => {
+    if (!spanMeasure.height || !spanMeasure.width) return
+    if (spanMeasure.height > 6 || spanMeasure.width > 6) return
 
-		if (category === 'folhas') {
-			if (!leafs || leafs > 6) return
-		}
+    if (category === 'folhas') {
+      if (!leafs || leafs > 6) return
+    }
 
-		if (category === 'box') {
-			if (boxPadding < 3 || leafs > 7) return
-		}
+    if (category === 'box') {
+      if (boxPadding < 3 || leafs > 7) return
+    }
 
-		if (pricePerMeter > 200 || pricePerMeter < 100) return
+    if (pricePerMeter > 500 || pricePerMeter < 100) return
 
-		const result = convertToFinalResult({
-			fixed,
-			leafs,
-			mobile,
-			boxPadding,
-			pricePerMeter,
-			spanMeasure,
-			incrementPercent,
-			category
-		})
+    const result = convertToFinalResult({
+      fixed,
+      leafs,
+      mobile,
+      boxPadding,
+      pricePerMeter,
+      spanMeasure,
+      incrementPercent,
+      category
+    })
 
-		setResultPartDataList(
-			prev => [...new Set([...prev, {
-				fixed: result.fixed,
-				mobile: result.mobile,
-				leafs,
-				boxPadding,
-				spanMeasure,
-				pricePerMeter,
-				incrementPercent,
-				category,
-				price: result.price
-			}])]
-		)
-	}
+    setResultPartDataList(
+      prev => [...new Set([...prev, {
+        fixed: result.fixed,
+        mobile: result.mobile,
+        leafs,
+        boxPadding,
+        spanMeasure,
+        pricePerMeter,
+        incrementPercent,
+        category,
+        price: result.price
+      }])]
+    )
+  }
 
-	const getFinalCost = () => {
-		return resultPartDataList
-			.reduce(
-				(sum, item) => sum + item.price, 0
-			)
-	}
+  const getFinalCost = () => {
+    return resultPartDataList
+      .reduce(
+        (sum, item) => sum + item.price, 0
+      )
+  }
 
-	const changeCategory = (category: GlassCategory) => {
-		handleUpdateSingleValue('category', category)
-		setCurrentCategory(category)
-		if (category !== 'folhas') {
-			handleUpdateSingleValue('leafs', 0)
-		}
+  const changeCategory = (category: GlassCategory) => {
+    handleUpdateSingleValue('category', category)
+    setCurrentCategory(category)
+    if (category !== 'folhas') {
+      handleUpdateSingleValue('leafs', 0)
+    }
 
-		if (category !== 'box') {
-			handleUpdateSingleValue('boxPadding', 0)
-		}
+    if (category !== 'box') {
+      handleUpdateSingleValue('boxPadding', 0)
+    }
 
-	}
+  }
 
-	return (
-		<div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
+  return (
+    <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
 
-			<Header />
-			<main className="w-full max-w-4xl flex flex-col gap-5">
-				<h3 className='tracking-widest font-black uppercase text-[10px] text-zinc-400'>Selecione: </h3>
-				<div className='flex gap-2 flex-wrap'>
-					{
-						(['folhas', 'pivotante', 'basculante', 'correr', 'box'] as GlassCategory[]).map(category => {
-							return (
-								<h2 onClick={() => changeCategory(category)} className={`py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800 cursor-pointer'} font-bold tracking-widest text-xs w-26 text-center shrink-0 uppercase rounded-md`}>{category}</h2>
-							)
-						})
-					}
-				</div>
-				<SectionParameters
-					currentCategory={currentCategory}
-					measures={partData}
-					onGenerateBudget={handleGenerateBudget}
-					onMeasureUpdate={handleUpdateMeasure}
-					onUpdateSingleValue={handleUpdateSingleValue}
-				/>
+      <Header />
+      <main className="w-full max-w-4xl flex flex-col gap-5">
+        <h3 className='tracking-widest font-black uppercase text-[10px] text-zinc-400'>Selecione: </h3>
+        <div className='flex gap-2 flex-wrap'>
+          {
+            (['folhas', 'pivotante', 'basculante', 'correr', 'box'] as GlassCategory[]).map(category => {
+              return (
+                <h2 onClick={() => changeCategory(category)} className={`py-3 px-2 ${category === currentCategory ? 'bg-blue-800 border-blue-500 border' : 'bg-zinc-700 hover:bg-zinc-800 cursor-pointer'} font-bold tracking-widest text-xs w-26 text-center shrink-0 uppercase rounded-md`}>{category}</h2>
+              )
+            })
+          }
+        </div>
+        <SectionParameters
+          currentCategory={currentCategory}
+          measures={partData}
+          onGenerateBudget={handleGenerateBudget}
+          onMeasureUpdate={handleUpdateMeasure}
+          onUpdateSingleValue={handleUpdateSingleValue}
+        />
 
-				<section className="grid grid-cols-1 md:grid-cols-12 gap-5">
-					<div className="md:col-span-7 bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col gap-4 shadow-xl">
-						<h3 className="text-blue-600 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Medidas de Corte e Peças</h3>
-						<TableDetails resultPartDataList={resultPartDataList} />
+        <section className="grid grid-cols-1 md:grid-cols-12 gap-5">
+          <div className="md:col-span-7 bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col gap-4 shadow-xl">
+            <h3 className="text-blue-600 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Medidas de Corte e Peças</h3>
+            <TableDetails resultPartDataList={resultPartDataList} />
 
-						<div className='my-2 flex gap-2'>
-							<h3 className="text-zinc-200 font-bold tracking-widest uppercase text-xs bg-zinc-700 rounded-lg p-3">
-								itens: {resultPartDataList.length}
-							</h3>
+            <div className='my-2 flex gap-2'>
+              <h3 className="text-zinc-200 font-bold tracking-widest uppercase text-xs bg-zinc-700 rounded-lg p-3">
+                itens: {resultPartDataList.length}
+              </h3>
 
-							<button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer' onClick={() => setResultPartDataList([])}>
-								Limpar
-							</button>
-						</div>
-					</div>
+              <button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer' onClick={() => setResultPartDataList([])}>
+                Limpar
+              </button>
+            </div>
+          </div>
 
-					<FinalCost cost={getFinalCost()} />
-				</section>
+          <FinalCost cost={getFinalCost()} />
+        </section>
 
-			</main>
+      </main>
 
-			<footer className="mt-auto py-6 text-zinc-800 text-[9px] font-bold tracking-[0.4em] uppercase">
-				VidroMix // Calculadora // Orçamento
-			</footer>
+      <footer className="mt-auto py-6 text-zinc-800 text-[9px] font-bold tracking-[0.4em] uppercase">
+        VidroMix // Calculadora // Orçamento
+      </footer>
 
-		</div >
-	)
+    </div >
+  )
 }
 
