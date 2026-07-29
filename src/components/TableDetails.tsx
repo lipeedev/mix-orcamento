@@ -15,10 +15,9 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
 
       <div className="w-full flex flex-col gap-2">
         <div className="flex bg-zinc-950/50 p-3 rounded-lg border border-zinc-800/50 text-xs text-zinc-400 uppercase font-bold tracking-tighter">
-          <div className="flex-1">Vão</div>
-          <div className="flex-1 text-center">Fixo</div>
+          <div className="flex-1">Fixo</div>
           <div className="flex-1 text-center">Móvel</div>
-          <div className="flex-1 text-right">Peças</div>
+          <div className="flex-1 text-center">Peças</div>
           <div className="w-24 text-right">Valor</div>
         </div>
 
@@ -27,11 +26,10 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
             resultPartDataList
               .map((item) => (
                 <div key={Math.random()} className="flex items-center bg-zinc-950/50 p-3 rounded-lg border border-zinc-800/50 font-bold tracking-tighter text-sm text-zinc-300">
-                  <div className="flex-1">{metersFormater.format(item.spanMeasure.height)}m x {metersFormater.format(item.spanMeasure.width)}m</div>
-                  <div className="flex-1 text-center">{metersFormater.format(item.fixed.height)}m x {metersFormater.format(item.fixed.width)}m</div>
+                  <div className="flex-1">{metersFormater.format(item.fixed.height)}m x {metersFormater.format(item.fixed.width)}m</div>
                   <div className="flex-1 text-center">{metersFormater.format(item.mobile.height)}m x {metersFormater.format(item.mobile.width)}m</div>
                   {
-                    (item.category === 'folhas') && <div className="uppercase w-24 text-right">{item.leafs / 2} Fixo, {item.leafs / 2} Móvel</div>
+                    (item.category === 'folhas') && <div className="uppercase w-24 text-center">{item.leafs / 2} Fixo / Móvel</div>
                   }
                   {
                     (item.category === 'box') && <div className="uppercase w-24 text-center">1 Fixo, 1 Móvel</div>
@@ -39,7 +37,7 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
                   {
                     (!['box', 'folhas'].includes(item.category)) && <div className="uppercase w-24 text-center">1 {item.category}</div>
                   }
-                  <div className="flex-1">{item.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
+                  <div className="flex-1 text-right">{item.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
                 </div>
               ))
           }
