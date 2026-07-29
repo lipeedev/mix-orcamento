@@ -18,7 +18,8 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
           <div className="flex-1">Vão</div>
           <div className="flex-1 text-center">Fixo</div>
           <div className="flex-1 text-center">Móvel</div>
-          <div className="w-24 text-right">Qtd. Peças</div>
+          <div className="flex-1 text-right">Peças</div>
+          <div className="w-24 text-right">Valor</div>
         </div>
 
         <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
@@ -33,11 +34,12 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
                     (item.category === 'folhas') && <div className="uppercase w-24 text-right">{item.leafs / 2} Fixo, {item.leafs / 2} Móvel</div>
                   }
                   {
-                    (item.category === 'box') && <div className="uppercase w-24 text-right">1 Fixo, 1 Móvel</div>
+                    (item.category === 'box') && <div className="uppercase w-24 text-center">1 Fixo, 1 Móvel</div>
                   }
                   {
-                    (!['box', 'folhas'].includes(item.category)) && <div className="uppercase w-24 text-right">1 {item.category}</div>
+                    (!['box', 'folhas'].includes(item.category)) && <div className="uppercase w-24 text-center">1 {item.category}</div>
                   }
+                  <div className="flex-1">{item.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
                 </div>
               ))
           }
