@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FinalCost, Header, SectionParameters, TableDetails, ItemsTableDetails } from './components'
+import { FinalCost, Header, SectionParameters, TableDetails, ItemsTableDetails, ItemSelectModal } from './components'
 import './styles/global.css'
 import { convertToFinalResult } from './utils'
 
@@ -47,6 +47,8 @@ export function App() {
     category: 'folhas'
   })
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
   const [resultPartDataList, setResultPartDataList] = useState<ResultPartData[]>([])
 
   const [currentCategory, setCurrentCategory] = useState<GlassCategory>('folhas')
@@ -59,6 +61,10 @@ export function App() {
         [measureField]: value
       }
     }))
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
   }
 
   const handleUpdateSingleValue = (field: PartDataSingleValueFields, value: number | string) => {
@@ -127,7 +133,6 @@ export function App() {
 
   return (
     <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
-
       <Header />
       <main className="w-full max-w-4xl flex flex-col gap-5">
         <h3 className='tracking-widest font-black uppercase text-[10px] text-zinc-400'>Selecione: </h3>
@@ -154,18 +159,18 @@ export function App() {
             <TableDetails resultPartDataList={resultPartDataList} />
 
             <h3 className="text-orange-400 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Acessórios</h3>
-	    <ItemsTableDetails itemList={ [{ name: 'Teste', price: 150 }] } />
+            <ItemsTableDetails itemList={[{ name: 'Teste', price: 150 }]} />
 
             <div className='my-2 flex gap-2'>
               <h3 className="text-zinc-200 font-bold tracking-widest uppercase text-xs bg-zinc-700 rounded-lg p-3">
                 itens: {resultPartDataList.length}
               </h3>
 
-              <button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-blue-800 hover:bg-blue-800/50 cursor-pointer'>
+              <button onClick={() => setIsModalOpen(prev => !prev)} className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-blue-800 hover:bg-blue-800/50 cursor-pointer'>
                 Adicionar Item
               </button>
-              
-	      <button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer' onClick={() => setResultPartDataList([])}>
+
+              <button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer' onClick={() => setResultPartDataList([])}>
                 Limpar
               </button>
             </div>
@@ -180,6 +185,10 @@ export function App() {
         VidroMix // Calculadora // Orçamento
       </footer>
 
+      {
+
+        isModalOpen && <ItemSelectModal onClose={handleCloseModal} />
+      }
     </div >
   )
 }
