@@ -9,7 +9,7 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
     mobile: { height: 0, width: 0. }
   }
 
-  let finalResult = {
+  const finalResult = {
     fixed: {
       height: 0,
       width: 0,
