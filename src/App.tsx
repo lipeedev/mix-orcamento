@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FinalCost, Header, SectionParameters, TableDetails, ItemsTableDetails, ItemSelectModal } from './components'
 import './styles/global.css'
 import { convertToFinalResult } from './utils'
+import type { Item } from './components'
 
 type Measure = {
   height: number,
@@ -35,6 +36,11 @@ type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incre
 type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
+const defaultItemList: Item[] = [
+ { name: "Puxador \"H\" Eixo 30 Polido", price: 40 },
+ { name: "Kit 01 Branco / Preto", price: 72 }
+]
+
 export function App() {
   const [partData, setPartData] = useState<PartData>({
     spanMeasure: { height: 0, width: 0 },
@@ -46,6 +52,7 @@ export function App() {
     incrementPercent: 0,
     category: 'folhas'
   })
+
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -187,7 +194,7 @@ export function App() {
 
       {
 
-        isModalOpen && <ItemSelectModal onClose={handleCloseModal} />
+        isModalOpen && <ItemSelectModal onClose={handleCloseModal} itemListToSearch={defaultItemList} />
       }
     </div >
   )
