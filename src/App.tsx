@@ -3,6 +3,7 @@ import { FinalCost, Header, SectionParameters, TableDetails, ItemsTableDetails, 
 import './styles/global.css'
 import { convertToFinalResult } from './utils'
 import type { Item } from './components'
+import defaultItemsJSON from '../data/items.json'
 
 type Measure = {
   height: number,
@@ -36,10 +37,7 @@ type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incre
 type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
-const defaultItemList: Item[] = [
-  { id: "H30POL", name: "Puxador \"H\" 30 Polido", price: 40, count: 1 },
-  { id: "KIT01", name: "Kit 01 Branco / Preto", price: 72, count: 1 }
-]
+const defaultItemList = defaultItemsJSON.items as unknown as Item[]
 
 export function App() {
   const [partData, setPartData] = useState<PartData>({
