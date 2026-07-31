@@ -92,6 +92,20 @@ export function App() {
     });
   };
 
+  const handleChangePrice = (price: number, itemID: string) => {
+    setSelectedItems(prev => {
+      const updated = [...prev]
+      const itemIndex = updated.findIndex(item => item.id === itemID)!
+
+      updated[itemIndex] = {
+        ...updated[itemIndex],
+        price
+      }
+
+      return updated
+    })
+  }
+
   const handleCloseModal = () => {
     setIsModalOpen(false)
   }
@@ -192,7 +206,7 @@ export function App() {
             <TableDetails resultPartDataList={resultPartDataList} />
 
             <h3 className="text-orange-400 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Acessórios</h3>
-            <ItemsTableDetails itemList={selectedItems} />
+            <ItemsTableDetails onChangePrice={handleChangePrice} itemList={selectedItems} />
 
             <div className='my-2 flex gap-2'>
               <h3 className="text-zinc-200 font-bold tracking-widest uppercase text-xs bg-zinc-700 rounded-lg p-3">
