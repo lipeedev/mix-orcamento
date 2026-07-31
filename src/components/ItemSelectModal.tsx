@@ -45,7 +45,7 @@ export function ItemSelectModal({ onClose, itemListToSearch, onSelectItems, clas
           {
             itemListToSearch.slice(0, 5)
               .map((item) => (
-                <div key={item.id} className="flex bg-zinc-950/50 p-3 gap-2 rounded-lg border border-zinc-800/50">
+                <div key={item.id} className="flex bg-zinc-950/50 p-3 gap-2 rounded-lg border border-zinc-800/50 items-center justify-center">
                   <input
                     type="checkbox"
                     checked={choosedItems.some(i => i.id === item.id)}

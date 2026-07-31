@@ -160,7 +160,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
+    <div className="overflow-hidden min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center py-6 px-4 font-sans antialiased">
       <Header />
       <main className="w-full max-w-4xl flex flex-col gap-5">
         <h3 className='tracking-widest font-black uppercase text-[10px] text-zinc-400'>Selecione: </h3>
