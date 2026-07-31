@@ -37,7 +37,7 @@ type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
 const defaultItemList: Item[] = [
-  { id: "H30POL", name: "Puxador \"H\" Eixo 30 Polido", price: 40, count: 1 },
+  { id: "H30POL", name: "Puxador \"H\" 30 Polido", price: 40, count: 1 },
   { id: "KIT01", name: "Kit 01 Branco / Preto", price: 72, count: 1 }
 ]
 
@@ -145,6 +145,11 @@ export function App() {
       .reduce(
         (sum, item) => sum + item.price, 0
       )
+      +
+      selectedItems
+        .reduce(
+          (sum, item) => sum + (item.count * item.price), 0
+        )
   }
 
   const changeCategory = (category: GlassCategory) => {
@@ -191,14 +196,19 @@ export function App() {
 
             <div className='my-2 flex gap-2'>
               <h3 className="text-zinc-200 font-bold tracking-widest uppercase text-xs bg-zinc-700 rounded-lg p-3">
-                itens: {resultPartDataList.length}
+                itens: {resultPartDataList.length + selectedItems.reduce((sum, item) => sum + item.count, 0)}
               </h3>
 
               <button onClick={() => setIsModalOpen(prev => !prev)} className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-blue-800 hover:bg-blue-800/50 cursor-pointer'>
                 Adicionar Item
               </button>
 
-              <button className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer' onClick={() => setResultPartDataList([])}>
+              <button
+                className='font-bold text-xs tracking-widest uppercase p-3 rounded-lg bg-orange-400 hover:bg-orange-500 cursor-pointer'
+                onClick={() => {
+                  setResultPartDataList([])
+                  setSelectedItems([])
+                }}>
                 Limpar
               </button>
             </div>

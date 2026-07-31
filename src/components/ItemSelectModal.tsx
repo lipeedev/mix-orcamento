@@ -10,6 +10,7 @@ interface ItemSelectModalProps {
 
 export function ItemSelectModal({ onClose, itemListToSearch, onSelectItems, className }: ItemSelectModalProps) {
   const [choosedItems, setChoosedItems] = useState<Item[]>([])
+  const [itemDescription, setItemDescription] = useState<string>("")
 
   const handleChooseItem = (itemID: string) => {
     setChoosedItems(prev => {
@@ -27,6 +28,7 @@ export function ItemSelectModal({ onClose, itemListToSearch, onSelectItems, clas
 
     onSelectItems(choosedItems)
     setChoosedItems([])
+    setItemDescription("")
     onClose()
   }
 
@@ -34,7 +36,7 @@ export function ItemSelectModal({ onClose, itemListToSearch, onSelectItems, clas
     <div onClick={() => onClose()} className={`${className} flex justify-center backdrop-blur-sm items-center fixed bg-zinc-900/50 min-h-screen`}>
 
       <div onClick={e => e.stopPropagation()} className={"md:w-1/2 p-4 flex flex-col gap-4 bg-zinc-600 rounded-md"}>
-        <input type="text" placeholder="Pesquise o item..." className="w-full bg-zinc-800/70 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-blue-600 transition-all placeholder:text-zinc-400" />
+        <input onChange={e => setItemDescription(e.target.value)} value={itemDescription} type="text" placeholder="Pesquise o item..." className="w-full bg-zinc-800/70 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-blue-600 transition-all placeholder:text-zinc-400" />
 
         <div className="flex justify-between text-zinc-200 text-[10px] mt-6 font-black uppercase tracking-widest border-b border-zinc-800 p-2">
           <span>Descrição</span>
@@ -43,7 +45,7 @@ export function ItemSelectModal({ onClose, itemListToSearch, onSelectItems, clas
 
         <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
           {
-            itemListToSearch.slice(0, 5)
+            itemListToSearch.filter(i => i.name.toLowerCase().startsWith(itemDescription.toLowerCase())).slice(0, 5)
               .map((item) => (
                 <div key={item.id} className="flex bg-zinc-950/50 p-3 gap-2 rounded-lg border border-zinc-800/50 items-center justify-center">
                   <input
