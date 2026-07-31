@@ -37,8 +37,8 @@ type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
 const defaultItemList: Item[] = [
- { name: "Puxador \"H\" Eixo 30 Polido", price: 40 },
- { name: "Kit 01 Branco / Preto", price: 72 }
+  { id: "H30POL", name: "Puxador \"H\" Eixo 30 Polido", price: 40, count: 1 },
+  { id: "KIT01", name: "Kit 01 Branco / Preto", price: 72, count: 1 }
 ]
 
 export function App() {
@@ -53,6 +53,7 @@ export function App() {
     category: 'folhas'
   })
 
+  const [selectedItems, setSelectedItems] = useState<Item[]>([])
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -69,6 +70,27 @@ export function App() {
       }
     }))
   }
+
+  const handleUpdateSelectedItems = (items: Item[]) => {
+    setSelectedItems(prev => {
+      const updated = [...prev];
+
+      for (const newItem of items) {
+        const index = updated.findIndex(i => i.id === newItem.id);
+
+        if (index >= 0) {
+          updated[index] = {
+            ...updated[index],
+            count: updated[index].count + 1
+          };
+        } else {
+          updated.push({ ...newItem });
+        }
+      }
+
+      return updated;
+    });
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
@@ -135,7 +157,6 @@ export function App() {
     if (category !== 'box') {
       handleUpdateSingleValue('boxPadding', 0)
     }
-
   }
 
   return (
@@ -166,7 +187,7 @@ export function App() {
             <TableDetails resultPartDataList={resultPartDataList} />
 
             <h3 className="text-orange-400 text-[10px] font-black uppercase tracking-widest border-b border-zinc-800 pb-2">Acessórios</h3>
-            <ItemsTableDetails itemList={[{ name: 'Teste', price: 150 }]} />
+            <ItemsTableDetails itemList={selectedItems} />
 
             <div className='my-2 flex gap-2'>
               <h3 className="text-zinc-200 font-bold tracking-widest uppercase text-xs bg-zinc-700 rounded-lg p-3">
@@ -192,10 +213,13 @@ export function App() {
         VidroMix // Calculadora // Orçamento
       </footer>
 
-      {
+      <ItemSelectModal
+        className={`${isModalOpen ? "opacity-100 translate-y-0 visible" : "invisible opacity-0 -translate-y-2"} inset-0 ease-in-out transition-all duration-200`}
+        onClose={handleCloseModal}
+        itemListToSearch={defaultItemList}
+        onSelectItems={handleUpdateSelectedItems}
+      />
 
-        isModalOpen && <ItemSelectModal onClose={handleCloseModal} itemListToSearch={defaultItemList} />
-      }
     </div >
   )
 }
