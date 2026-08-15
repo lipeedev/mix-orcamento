@@ -45,7 +45,7 @@ export function ItemSelectModal({ onClose, itemListToSearch, onSelectItems, clas
 
         <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
           {
-            itemListToSearch.filter(i => i.name.toLowerCase().startsWith(itemDescription.toLowerCase())).slice(0, 5)
+            itemListToSearch.filter(i => i.name.toLowerCase().includes(itemDescription.toLowerCase())).slice(0, 5)
               .map((item) => (
                 <div key={item.id} className="flex bg-zinc-950/50 p-3 gap-2 rounded-lg border border-zinc-800/50 items-center justify-center">
                   <input
