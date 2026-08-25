@@ -55,6 +55,12 @@
       "count": 1
     },
     {
+      "id": "ACPIA",
+      "name": "Acessorios Pia BR / PT",
+      "price": 14,
+      "count": 1
+    },
+    {
       "id": "ACF1",
       "name": "Acessorios F1 BR / PT",
       "price": 18,
@@ -142,6 +148,108 @@
       "id": "CONJCONV",
       "name": "Conj. Conv. Preto",
       "price": 370,
+      "count": 1
+    },
+    {
+      "id": "KITF100",
+      "name": "Kit Box F1 1,00m BR / PT",
+      "price": 95,
+      "count": 1
+    },
+    {
+      "id": "KITF110",
+      "name": "Kit Box F1 1,10m BR / PT",
+      "price": 97,
+      "count": 1
+    },
+    {
+      "id": "KITF120",
+      "name": "Kit Box F1 1,20m BR / PT",
+      "price": 105,
+      "count": 1
+    },
+    {
+      "id": "KITF130",
+      "name": "Kit Box F1 1,30m BR / PT",
+      "price": 108,
+      "count": 1
+    },
+    {
+      "id": "KITF140",
+      "name": "Kit Box F1 1,40m BR",
+      "price": 112,
+      "count": 1
+    },
+    {
+      "id": "KITF150",
+      "name": "Kit Box F1 1,50m BR / PT",
+      "price": 115,
+      "count": 1
+    },
+    {
+      "id": "KITF160",
+      "name": "Kit Box F1 1,60m BR / PT",
+      "price": 122,
+      "count": 1
+    },
+    {
+      "id": "KITF180",
+      "name": "Kit Box F1 1,80m BR / PT",
+      "price": 132,
+      "count": 1
+    }, 
+    {
+      "id": "KITF200",
+      "name": "Kit Box F1 2,00m BR / PT",
+      "price": 165,
+      "count": 1
+    },
+    {
+      "id": "KITP100",
+      "name": "Kit Pia 1,00m BR / PT",
+      "price": 100,
+      "count": 1
+    },
+    {
+      "id": "KITP120",
+      "name": "Kit Pia 1,20m BR / PT",
+      "price": 105,
+      "count": 1
+    },
+    {
+      "id": "KITP150",
+      "name": "Kit Pia 1,50m Branco",
+      "price": 115,
+      "count": 1
+    },
+    {
+      "id": "KITP150",
+      "name": "Kit Pia 1,50m Preto",
+      "price": 120,
+      "count": 1
+    },
+    {
+      "id": "KITP180",
+      "name": "Kit Pia 1,80m BR / PT",
+      "price": 140,
+      "count": 1
+    },
+    {
+      "id": "KITP200",
+      "name": "Kit Pia 2,00m BR / PT",
+      "price": 150,
+      "count": 1
+    },
+    {
+      "id": "CONJPIAPT",
+      "name": "Conjunto Pia Preto",
+      "price": 290,
+      "count": 1
+    },
+    {
+      "id": "CONJPIABR",
+      "name": "Conjunto Pia Branco",
+      "price": 260,
       "count": 1
     }
   ]
