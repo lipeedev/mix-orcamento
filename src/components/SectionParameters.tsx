@@ -6,10 +6,11 @@ interface SectionParametersProps {
   onUpdateSingleValue: (field: PartDataSingleValueFields, value: number) => void
   onGenerateBudget: (params: PartData) => void
   onToggleFinalMeasure: () => void
-  currentCategory: GlassCategory
+  currentCategory: GlassCategory,
+  isFinalMeasure: boolean
 }
 
-export function SectionParameters({ onToggleFinalMeasure, onGenerateBudget, measures, onMeasureUpdate, onUpdateSingleValue, currentCategory }: SectionParametersProps) {
+export function SectionParameters({ isFinalMeasure, onToggleFinalMeasure, onGenerateBudget, measures, onMeasureUpdate, onUpdateSingleValue, currentCategory }: SectionParametersProps) {
 
   return (
     <section className="bg-zinc-900 p-5 rounded-xl border border-zinc-800 shadow-2xl">
@@ -56,18 +57,18 @@ export function SectionParameters({ onToggleFinalMeasure, onGenerateBudget, meas
             <input max="50" onChange={e => onUpdateSingleValue('incrementPercent', Number(e.target.value))} type="number" placeholder="0" className="bg-zinc-800 border border-blue-900/30 rounded-lg px-3 py-2.5 outline-none focus:border-orange-400 transition-all placeholder:text-zinc-400" />
           </div>
 
-          <div className="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              className="cursor-pointer h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-blue-600"
-              onClick={() => onToggleFinalMeasure()}
-            />
-            <h3
-              className="text-xs font-black text-zinc-500 uppercase tracking-[0.2em]"
-            >
-              Medida final
-            </h3>
-          </div>
+          {
+            !(["box", "folhas"] as GlassCategory[]).includes(currentCategory)
+            &&
+            <div onClick={() => onToggleFinalMeasure()} className="cursor-pointer flex gap-2 md:gap-4 md:mt-4 md:justify-center items-center">
+              <input
+                type="checkbox"
+                className="cursor-pointer h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-blue-600"
+                checked={isFinalMeasure}
+              />
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Medida final</h3>
+            </div>
+          }
 
           <div className="flex items-end">
             <button type="submit" onClick={() => onGenerateBudget(measures)} className="w-full bg-orange-400 hover:bg-orange-600 text-white font-black py-3.5 rounded-lg transition-all active:scale-95 shadow-lg shadow-orange-900/20 text-xs uppercase tracking-widest cursor-pointer">

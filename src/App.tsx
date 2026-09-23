@@ -205,6 +205,7 @@ export function App() {
           onGenerateBudget={handleGenerateBudget}
           onMeasureUpdate={handleUpdateMeasure}
           onUpdateSingleValue={handleUpdateSingleValue}
+          isFinalMeasure={isFinalMeasure}
         />
 
         <section className="grid grid-cols-1 md:grid-cols-12 gap-5">

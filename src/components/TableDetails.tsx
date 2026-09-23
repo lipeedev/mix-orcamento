@@ -25,7 +25,7 @@ export function TableDetails({ resultPartDataList }: TableDetailsProps) {
           {
             resultPartDataList
               .map((item) => (
-                <div key={Math.random()} className="flex items-center bg-zinc-800 p-3 rounded-lg border border-zinc-800/50 font-bold tracking-tighter text-sm text-zinc-300">
+                <div key={Date.now()} className="flex items-center bg-zinc-800 p-3 rounded-lg border border-zinc-800/50 font-bold tracking-tighter text-sm text-zinc-300">
                   <div className="flex-1">{metersFormater.format(item.fixed.height)}m x {metersFormater.format(item.fixed.width)}m</div>
                   <div className="flex-1 text-center">{metersFormater.format(item.mobile.height)}m x {metersFormater.format(item.mobile.width)}m</div>
                   {
