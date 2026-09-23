@@ -1,7 +1,7 @@
 import type { PartData } from "../App";
 import { adjustMeasureToFive } from "./adjustMeasureToFive";
 
-export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, incrementPercent, category, boxPadding }: PartData) {
+export function convertToFinalResult({ isFinalMeasure, pricePerMeter, spanMeasure, leafs, incrementPercent, category, boxPadding }: PartData) {
   const increasePercent = 1 + (incrementPercent / 100);
   const passMeasure = 0.05
   let space = {
@@ -10,14 +10,14 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
   }
 
   const finalResult = {
-    fixed: {
-      height: 0,
-      width: 0,
-    },
-    mobile: {
-      height: 0,
-      width: 0,
-    },
+      fixed: { 
+	height: 0,/*spanMeasure.fixed.height ?? 0,*/
+	width: 0/*spanMeasure.fixed.width ?? 0*/
+      },
+      mobile: {
+        height: 0,/*spanMeasure.mobile.height ?? 0,*/
+        width: 0/*spanMeasure.mobile.width ?? 0*/
+      },
     price: 0
   }
 
@@ -26,9 +26,12 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
       fixed: { height: 0, width: 0 },
       mobile: { height: 0.015, width: 0.01 }
     }
+ 
+    if (!isFinalMeasure) {
+      finalResult.mobile.height = spanMeasure.height - space.mobile.height
+      finalResult.mobile.width = spanMeasure.width - space.mobile.width
+    }
 
-    finalResult.mobile.height = spanMeasure.height - space.mobile.height
-    finalResult.mobile.width = spanMeasure.width - space.mobile.width
     finalResult.price = ((adjustMeasureToFive(spanMeasure.height) * adjustMeasureToFive(spanMeasure.width)) * pricePerMeter) * increasePercent
   }
 
@@ -38,10 +41,13 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
       mobile: { height: 0.02, width: 0 }
     }
 
-    finalResult.fixed.height = spanMeasure.height - space.fixed.height
-    finalResult.fixed.width = spanMeasure.width / leafs
-    finalResult.mobile.height = spanMeasure.height - space.mobile.height
-    finalResult.mobile.width = (spanMeasure.width / leafs) + passMeasure
+    if (!isFinalMeasure) {
+      finalResult.fixed.height = spanMeasure.height - space.fixed.height
+      finalResult.fixed.width = spanMeasure.width / leafs
+      finalResult.mobile.height = spanMeasure.height - space.mobile.height
+      finalResult.mobile.width = (spanMeasure.width / leafs) + passMeasure
+    }
+
     finalResult.price = (adjustMeasureToFive(spanMeasure.height) * (adjustMeasureToFive(spanMeasure.width) + passMeasure) * pricePerMeter) * increasePercent
   }
 
@@ -51,8 +57,11 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
       mobile: { height: 0.01, width: 0.01 }
     }
 
-    finalResult.mobile.height = spanMeasure.height - space.mobile.height
-    finalResult.mobile.width = spanMeasure.width - space.mobile.width
+    if (!isFinalMeasure) {
+      finalResult.mobile.height = spanMeasure.height - space.mobile.height
+      finalResult.mobile.width = spanMeasure.width - space.mobile.width
+    }
+
     finalResult.price = ((adjustMeasureToFive(spanMeasure.height) * adjustMeasureToFive(spanMeasure.width)) * pricePerMeter) * increasePercent
   }
 
@@ -62,8 +71,10 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
       mobile: { height: 0.05, width: 0.05 }
     }
 
-    finalResult.mobile.height = spanMeasure.height + space.mobile.height
-    finalResult.mobile.width = spanMeasure.width + space.mobile.width
+    if (!isFinalMeasure) {
+      finalResult.mobile.height = spanMeasure.height + space.mobile.height
+      finalResult.mobile.width = spanMeasure.width + space.mobile.width
+    }
 
     finalResult.price = ((adjustMeasureToFive(finalResult.mobile.height) * adjustMeasureToFive(finalResult.mobile.width)) * pricePerMeter) * increasePercent
   }
@@ -77,11 +88,14 @@ export function convertToFinalResult({ pricePerMeter, spanMeasure, leafs, increm
     const widthWithPadding = adjustMeasureToFive(spanMeasure.width + (boxPadding / 100))
     const firstWidth = adjustMeasureToFive(widthWithPadding / 2)
     const secondWidth = adjustMeasureToFive(widthWithPadding - firstWidth)
+ 
+    if (!isFinalMeasure) {
+      finalResult.fixed.height = spanMeasure.height - space.fixed.height
+      finalResult.fixed.width = firstWidth < secondWidth ? firstWidth : secondWidth
+      finalResult.mobile.height = spanMeasure.height
+      finalResult.mobile.width = firstWidth > secondWidth ? firstWidth : secondWidth
+    }
 
-    finalResult.fixed.height = spanMeasure.height - space.fixed.height
-    finalResult.fixed.width = firstWidth < secondWidth ? firstWidth : secondWidth
-    finalResult.mobile.height = spanMeasure.height
-    finalResult.mobile.width = firstWidth > secondWidth ? firstWidth : secondWidth
     finalResult.price = (adjustMeasureToFive(spanMeasure.height) * adjustMeasureToFive(widthWithPadding) * pricePerMeter) * increasePercent
   }
 

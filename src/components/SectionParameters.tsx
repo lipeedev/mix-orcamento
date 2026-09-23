@@ -5,10 +5,11 @@ interface SectionParametersProps {
   onMeasureUpdate: (params: HandleUpdateMeasureParams) => void
   onUpdateSingleValue: (field: PartDataSingleValueFields, value: number) => void
   onGenerateBudget: (params: PartData) => void
+  onToggleFinalMeasure: () => void
   currentCategory: GlassCategory
 }
 
-export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate, onUpdateSingleValue, currentCategory }: SectionParametersProps) {
+export function SectionParameters({ onToggleFinalMeasure, onGenerateBudget, measures, onMeasureUpdate, onUpdateSingleValue, currentCategory }: SectionParametersProps) {
 
   return (
     <section className="bg-zinc-900 p-5 rounded-xl border border-zinc-800 shadow-2xl">
@@ -20,12 +21,12 @@ export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate,
       <form onSubmit={e => e.preventDefault()}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Altura do Vão (m)</label>
+            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Altura (m)</label>
             <input max="6" step="any" required onChange={(e) => onMeasureUpdate({ field: 'spanMeasure', measureField: 'height', value: Number(e.target.value) })} type="number" placeholder="0.00" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-orange-400 transition-all placeholder:text-zinc-400" />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Largura do Vão (m)</label>
+            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Largura (m)</label>
             <input max="6" step="any" required onChange={(e) => onMeasureUpdate({ field: 'spanMeasure', measureField: 'width', value: Number(e.target.value) })} type="number" placeholder="0.00" className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 outline-none focus:border-blue-500 transition-all placeholder:text-zinc-400" />
           </div>
 
@@ -53,6 +54,19 @@ export function SectionParameters({ onGenerateBudget, measures, onMeasureUpdate,
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest italic">Acréscimo Opcional (%)</label>
             <input max="50" onChange={e => onUpdateSingleValue('incrementPercent', Number(e.target.value))} type="number" placeholder="0" className="bg-zinc-800 border border-blue-900/30 rounded-lg px-3 py-2.5 outline-none focus:border-orange-400 transition-all placeholder:text-zinc-400" />
+          </div>
+
+          <div className="flex gap-2 items-center">
+            <input
+              type="checkbox"
+              className="cursor-pointer h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-blue-600"
+              onClick={() => onToggleFinalMeasure()}
+            />
+            <h3
+              className="text-xs font-black text-zinc-500 uppercase tracking-[0.2em]"
+            >
+              Medida final
+            </h3>
           </div>
 
           <div className="flex items-end">

@@ -21,6 +21,7 @@ export type PartData = {
   boxPadding: number;
   pricePerMeter: number;
   incrementPercent: number;
+  isFinalMeasure?: boolean
 }
 
 export type ResultPartData = PartData & {
@@ -51,6 +52,8 @@ export function App() {
     category: 'folhas'
   })
 
+  const [isFinalMeasure, setIsFinalMeasure] = useState(false)
+
   const [selectedItems, setSelectedItems] = useState<Item[]>([])
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -58,6 +61,10 @@ export function App() {
   const [resultPartDataList, setResultPartDataList] = useState<ResultPartData[]>([])
 
   const [currentCategory, setCurrentCategory] = useState<GlassCategory>('folhas')
+
+  const handleToggleFinalMeasure = () => {
+    setIsFinalMeasure(prev => !prev)
+  }
 
   const handleUpdateMeasure = ({ field, measureField, value }: HandleUpdateMeasureParams) => {
     setPartData(prev => ({
@@ -134,7 +141,8 @@ export function App() {
       pricePerMeter,
       spanMeasure,
       incrementPercent,
-      category
+      category,
+      isFinalMeasure
     })
 
     setResultPartDataList(
@@ -191,6 +199,7 @@ export function App() {
           }
         </div>
         <SectionParameters
+          onToggleFinalMeasure={handleToggleFinalMeasure}
           currentCategory={currentCategory}
           measures={partData}
           onGenerateBudget={handleGenerateBudget}
