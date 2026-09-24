@@ -34,7 +34,7 @@ export type HandleUpdateMeasureParams = {
   value: number
 }
 
-type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent' | 'category' | 'boxPadding'>
+type PartDataFields = Exclude<keyof PartData, 'leafs' | 'pricePerMeter' | 'incrementPercent' | 'category' | 'boxPadding' | 'isFinalMeasure'>
 type PartDataMeasureFields = keyof Measure
 export type PartDataSingleValueFields = Exclude<keyof PartData, PartDataFields>
 
