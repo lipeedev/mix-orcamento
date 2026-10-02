@@ -129,25 +129,25 @@
     {
       "id": "CONJALBR",
       "name": "Conj. AL Branco",
-      "price": 335,
+      "price": 380,
       "count": 1
     },
     {
       "id": "CONJPERFBR",
       "name": "Conj. Perfal Branco",
-      "price": 315,
+      "price": 365,
       "count": 1
     },
     {
       "id": "CONJCONVBR",
       "name": "Conj. Conv. Branco",
-      "price": 325,
+      "price": 365,
       "count": 1
     },
     {
       "id": "CONJCONV",
       "name": "Conj. Conv. Preto",
-      "price": 370,
+      "price": 380,
       "count": 1
     },
     {
@@ -243,13 +243,19 @@
     {
       "id": "CONJPIAPT",
       "name": "Conjunto Pia Preto",
-      "price": 290,
+      "price": 320,
       "count": 1
     },
     {
       "id": "CONJPIABR",
       "name": "Conjunto Pia Branco",
-      "price": 260,
+      "price": 286,
+      "count": 1
+    },
+    {
+      "id": "MEIOCONJBR",
+      "name": "Meio Conjunto Branco",
+      "price": 206,
       "count": 1
     }
   ]
